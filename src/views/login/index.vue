@@ -74,13 +74,6 @@ export default {
     const validateMobile = (rule, value, callback) => {
       validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))
     }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码在6-16位之间'))
-      } else {
-        callback()
-      }
-    }
     return {
       loginForm: {
         mobile: '13800000002',
@@ -93,7 +86,7 @@ export default {
         ],
         password: [
           { required: true, trigger: 'blur', message: '密码不能为空' },
-          { validator: validatePassword, trigger: 'blur', min: 6, max: 16 }
+          { trigger: 'blur', min: 6, max: 16, message: '密码在6-16位之间' }
         ]
       },
       loading: false,
