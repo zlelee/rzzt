@@ -1,9 +1,11 @@
+import { login } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
   token: getToken()
 }
 const mutations = {
   setToken(state, token) {
+    // 将token存储到vuex
     state.token = token
     // 将token存储到缓存
     setToken(token)
@@ -13,8 +15,14 @@ const mutations = {
     removeToken()
   }
 }
-const actions = {}
-
+const actions = {
+  async login(context, data) {
+    const result = await login(data)
+    if (result.data.success) {
+      context.commit('setToken', result.data.data)
+    }
+  }
+}
 export default {
   namespaced: true,
   state,
