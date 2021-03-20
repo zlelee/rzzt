@@ -1,5 +1,5 @@
 import { login } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { getUserInfo, getUserDetailById } from '@/api/user'
 const state = {
   token: getToken(),
@@ -26,7 +26,8 @@ const mutations = {
 const actions = {
   async login(context, data) {
     const result = await login(data)
-    context.commit('setToken', result)
+    context.commit('setToken', result)// 把token 存一下
+    setTimeStamp() // 存一下时间戳, 为后面判断token超时做准备
   },
   async getUserInfo(context) {
     const result = await getUserInfo()
