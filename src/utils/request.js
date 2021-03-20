@@ -4,10 +4,10 @@ import { Message } from 'element-ui'
 import { getTimeStamp } from './auth'
 import router from '@/router'
 
-const timeout = 3600
+const timeout = 3600 // token的超时事件
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 环境变量
-  timeout: 5000 // 超时时间
+  timeout: 5000 // 发送请求的超时时间
 })
 service.interceptors.request.use(config => {
   // 在这个位置需要统一的去注入token
@@ -38,7 +38,14 @@ service.interceptors.response.use(response => {
   }
 }, err => {
   // 状态码在 2xx 范围之外都会走这里
-  Message.error(err.message) // err.message是错误对象的描述信息
+  // err里面有 response 对象
+  if (err.response && err.response.data && err.response.data.code === 10002) {
+    // 后端告诉我们token过期了
+    store.dispatch('user/logout')
+    router.push('/login')
+  } else {
+    Message.error(err.message) // err.message是错误对象的描述信息
+  }
   return Promise.reject(err) // 抛出错误,走 catch
 })
 function isCheckTimeOut() {
