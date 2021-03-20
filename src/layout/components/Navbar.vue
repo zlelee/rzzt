@@ -44,6 +44,10 @@ export default {
   components: {
     Hamburger
   },
+  data() {
+    return {
+    }
+  },
   computed: {
     ...mapGetters(['sidebar', 'name', 'staffPhoto'])
   },
