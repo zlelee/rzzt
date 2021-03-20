@@ -17,6 +17,7 @@ export function getTimeStamp() {
 export function setTimeStamp() {
   Cookies.set(timekey, Date.now())
 }
+
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
