@@ -10,7 +10,7 @@ router.beforeEach(async(to, from, next) => {
     if (to.path === '/login') {
       next('/') // 跳到首页
     } else {
-      if (!store.state.user.userInfo.userId) {
+      if (!store.getters.userId) {
         await store.dispatch('user/getUserInfo')
       }
       next() // 放行

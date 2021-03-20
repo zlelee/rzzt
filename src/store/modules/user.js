@@ -1,6 +1,6 @@
 import { login } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { getUserInfo } from '@/api/user'
+import { getUserInfo, getUserDetailById } from '@/api/user'
 const state = {
   token: getToken(),
   userInfo: {} // 设置一个空对象而不是null, 因为后面要通过userinfo.username的方式取数据,避免了报错
@@ -30,7 +30,8 @@ const actions = {
   },
   async getUserInfo(context) {
     const result = await getUserInfo()
-    context.commit('setUserInfo', result)
+    const baseResult = await getUserDetailById(result.userId)
+    context.commit('setUserInfo', { ...result, ...baseResult })
   }
 }
 export default {
