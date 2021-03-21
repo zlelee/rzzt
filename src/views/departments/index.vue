@@ -26,6 +26,7 @@
             </el-row>
           </el-col>
         </el-row>
+        <el-tree :data="data" :props="defaultProps" :default-expand-all="true" />
       </el-card>
     </div>
   </div>
@@ -33,10 +34,52 @@
 
 <script>
 export default {
-
+  name: 'Departments',
+  data() {
+    return {
+      data: [{
+        label: '一级 1',
+        children: [{
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }]
+      }, {
+        label: '一级 2',
+        children: [{
+          label: '二级 2-1',
+          children: [{
+            label: '三级 2-1-1'
+          }]
+        }, {
+          label: '二级 2-2',
+          children: [{
+            label: '三级 2-2-1'
+          }]
+        }]
+      }, {
+        label: '一级 3',
+        children: [{
+          label: '二级 3-1',
+          children: [{
+            label: '三级 3-1-1'
+          }]
+        }, {
+          label: '二级 3-2',
+          children: [{
+            label: '三级 3-2-1'
+          }]
+        }]
+      }],
+      defaultProps: {
+        label: 'label',
+        children: 'children'
+      }
+    }
+  }
 }
 </script>
-
 <style scoped>
 .tree-card {
   padding: 30px  140px;
