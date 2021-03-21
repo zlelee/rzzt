@@ -16,6 +16,7 @@
 <script>
 import treeItem from './components/tree-item'
 import { getDepartments } from '@/api/departments'
+import { tranListToTreeData } from '@/utils/index'
 export default {
   name: 'Departments',
   components: {
@@ -38,7 +39,7 @@ export default {
       const result = await getDepartments()
       // console.log(result)
       this.company = { name: result.companyName, manager: '负责人' }
-      this.departs = result.depts // 需要将其转化成树形结构
+      this.departs = tranListToTreeData(result.depts, '') // 需要将其转化成树形结构
     }
   }
 }
