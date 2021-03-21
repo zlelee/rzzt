@@ -9,6 +9,7 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 环境变量
   timeout: 5000 // 发送请求的超时时间
 })
+// 请求拦截器
 service.interceptors.request.use(config => {
   // 在这个位置需要统一的去注入token
   if (store.getters.token) {
