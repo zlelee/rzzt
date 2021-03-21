@@ -15,6 +15,7 @@
 
 <script>
 import treeItem from './components/tree-item'
+import { getDepartments } from '@/api/departments'
 export default {
   name: 'Departments',
   components: {
@@ -25,12 +26,19 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      departs: [
-        { name: '总裁办', manager: '曹操', children: [{ name: '董事会', manager: '曹丕' }] },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }
-      ],
-      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' }
+      departs: [],
+      company: {}
+    }
+  },
+  created() {
+    this.getDepartments()
+  },
+  methods: {
+    async getDepartments() {
+      const result = await getDepartments()
+      // console.log(result)
+      this.company = { name: result.companyName, manager: '负责人' }
+      this.departs = result.depts // 需要将其转化成树形结构
     }
   }
 }
