@@ -72,9 +72,8 @@ export default {
       this.showDialog = true
     },
     editDepts(node) {
-      this.node = node
       this.showDialog = true
-      this.$refs.addDept.getDepartDetail()
+      this.$refs.addDept.getDepartDetail(node.id)
     }
   }
 }
