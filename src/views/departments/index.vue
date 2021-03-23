@@ -6,7 +6,7 @@
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <!-- 传入内容 插槽内容 会循环多次 有多少节点 就循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据   data 每个节点的数据对象-->
-          <tree-item slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" />
+          <tree-item slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" />
         </el-tree>
       </el-card>
       <!-- 新增弹窗 -->
@@ -45,6 +45,10 @@ export default {
       // console.log(result)
       this.company = { name: result.companyName, manager: '负责人' }
       this.departs = tranListToTreeData(result.depts, '') // 需要将其转化成树形结构
+    },
+    addDepts(node) {
+      this.node = node
+      this.showDialog = true
     }
   }
 }
