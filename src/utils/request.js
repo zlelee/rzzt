@@ -10,7 +10,7 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 环境变量
   timeout: 5000 // 发送请求的超时时间
 })
-// 请求拦截器
+// 请求拦截器: 统一给请求添加token
 service.interceptors.request.use(config => {
   // 在这个位置需要统一的去注入token
   if (store.getters.token) {
@@ -28,7 +28,7 @@ service.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
-// 响应拦截器
+// 响应拦截器: (1).统一错误处理 (2).对响应的数据进行处理并且把业务错误的情况统一处理
 service.interceptors.response.use(response => {
   const { success, data, message } = response.data
   if (success) {

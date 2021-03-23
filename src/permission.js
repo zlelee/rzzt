@@ -3,6 +3,8 @@ import store from '@/store'
 import NProgress from 'nprogress' // 引入一份进度条插件
 import 'nprogress/nprogress.css' // 引入进度条样式
 const whiteList = ['/login', '/404']
+
+// 用户的权限访问
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   if (store.getters.token) {
