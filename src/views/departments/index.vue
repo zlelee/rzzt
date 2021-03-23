@@ -9,18 +9,21 @@
           <tree-item slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" />
         </el-tree>
       </el-card>
+      <!-- 新增弹窗 -->
+      <add-depts />
     </div>
   </div>
 </template>
 
 <script>
 import treeItem from './components/tree-item'
+import addDepts from './components/add-depts'
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
 export default {
   name: 'Departments',
   components: {
-    treeItem
+    treeItem, addDepts
   },
   data() {
     return {
