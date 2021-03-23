@@ -43,7 +43,7 @@ export default {
     async getDepartments() {
       const result = await getDepartments()
       // console.log(result)
-      this.company = { name: result.companyName, manager: '负责人' }
+      this.company = { name: result.companyName, manager: '负责人', id: '' }
       this.departs = tranListToTreeData(result.depts, '') // 需要将其转化成树形结构
     },
     addDepts(node) {
