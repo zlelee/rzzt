@@ -1,6 +1,6 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
+  <el-dialog :title="title" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form
@@ -83,9 +83,7 @@ export default {
       const isRepeat = depts
         .filter(item => item.pid === this.treeNode.id)
         .some(item => item.name === value)
-      isRepeat
-        ? callback(new Error(`同级部门下已经有${value}的部门了`))
-        : callback()
+      isRepeat ? callback(new Error(`同级部门下已经有${value}的部门了`)) : callback()
     }
     // 检查编码重复
     const checkCodeRepeat = async(rule, value, callback) => {
@@ -149,6 +147,12 @@ export default {
     }
   },
 
+  computed: {
+    title() {
+      return this.formData.id ? '编辑部门' : '新增子部门'
+    }
+  },
+
   methods: {
     async getEmployeeSimple() {
       this.peoples = await getEmployeeSimple()
@@ -164,6 +168,13 @@ export default {
       })
     },
     btnCancel() {
+      // 表单的resetfields方法只能重置formData绑定的数据, 不能重置新的数据
+      this.formData = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
       this.$refs.deptForm.resetFields() // 重置表单数据和校验规则
       this.$emit('update:showDialog', false)
     },
