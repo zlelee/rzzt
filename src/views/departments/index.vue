@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <el-card class="tree-card">
-        <tree-item :tree-node="company" :is-root="true" />
+        <tree-item :tree-node="company" :is-root="true" @delDepts="getDepartments" @addDepts="addDepts" />
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <!-- 传入内容 插槽内容 会循环多次 有多少节点 就循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据   data 每个节点的数据对象-->
@@ -10,7 +10,7 @@
         </el-tree>
       </el-card>
       <!-- 新增弹窗 -->
-      <add-depts :show-dialog="showDialog" />
+      <add-depts :show-dialog="showDialog" :tree-node="node" />
     </div>
   </div>
 </template>
