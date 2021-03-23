@@ -1,9 +1,14 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="showDialog">
+  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
-    <el-form ref="deptForm" :model="formData" :rules="rules" label-width="120px">
+    <el-form
+      ref="deptForm"
+      :model="formData"
+      :rules="rules"
+      label-width="120px"
+    >
       <el-form-item label="部门名称" prop="name">
         <el-input
           v-model="formData.name"
@@ -25,7 +30,11 @@
           placeholder="请选择"
           @focus="getEmployeeSimple"
         >
-          <el-option v-for="item in peoples" :key="item.id" :value="item.username" />
+          <el-option
+            v-for="item in peoples"
+            :key="item.id"
+            :value="item.username"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
@@ -43,10 +52,11 @@
       <!-- 列被分为24 -->
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOk">确定</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button size="small" @click="btnCancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
+
 </template>
 <script>
 import { getDepartments, addDepartments } from '@/api/departments'
@@ -70,15 +80,21 @@ export default {
       const { depts } = await getDepartments()
       // depts是所有的部门数据
       // 如何去找技术部所有的子节点
-      const isRepeat = depts.filter(item => item.pid === this.treeNode.id).some(item => item.name === value)
-      isRepeat ? callback(new Error(`同级部门下已经有${value}的部门了`)) : callback()
+      const isRepeat = depts
+        .filter(item => item.pid === this.treeNode.id)
+        .some(item => item.name === value)
+      isRepeat
+        ? callback(new Error(`同级部门下已经有${value}的部门了`))
+        : callback()
     }
     // 检查编码重复
     const checkCodeRepeat = async(rule, value, callback) => {
       // 先要获取最新的组织架构数据
       const { depts } = await getDepartments()
       const isRepeat = depts.some(item => item.code === value && value) // 这里加一个 value不为空 因为我们的部门有可能没有code
-      isRepeat ? callback(new Error(`组织架构中已经有部门使用${value}编码`)) : callback()
+      isRepeat
+        ? callback(new Error(`组织架构中已经有部门使用${value}编码`))
+        : callback()
     }
     return {
       // 定义表单数据
@@ -97,7 +113,8 @@ export default {
             max: 50,
             message: '部门名称要求1-50个字符',
             trigger: 'blur'
-          }, {
+          },
+          {
             trigger: 'blur',
             validator: checkNameRepeat // 自定义函数的形式校验
           }
@@ -109,7 +126,8 @@ export default {
             max: 50,
             message: '部门编码要求1-50个字符',
             trigger: 'blur'
-          }, {
+          },
+          {
             trigger: 'blur',
             validator: checkCodeRepeat
           }
@@ -137,13 +155,17 @@ export default {
       // console.log(this.peoples)
     },
     btnOk() {
-      this.$refs.deptForm.validate(async(isOk) => {
+      this.$refs.deptForm.validate(async isOk => {
         if (isOk) {
           await addDepartments({ ...this.formData, pid: this.treeNode.id })
           this.$emit('addDepts')
           this.$emit('update:showDialog', false)
         }
       })
+    },
+    btnCancel() {
+      this.$refs.deptForm.resetFields() // 重置表单数据和校验规则
+      this.$emit('update:showDialog', false)
     }
   }
 }
