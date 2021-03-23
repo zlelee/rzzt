@@ -10,7 +10,7 @@
         </el-tree>
       </el-card>
       <!-- 新增弹窗 -->
-      <add-depts :show-dialog="showDialog" :tree-node="node" />
+      <add-depts :show-dialog="showDialog" :tree-node="node" @addDepts="getDepartments" />
     </div>
   </div>
 </template>

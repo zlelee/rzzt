@@ -3,7 +3,7 @@
   <el-dialog title="新增部门" :visible="showDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
-    <el-form :model="formData" :rules="rules" label-width="120px">
+    <el-form ref="deptForm" :model="formData" :rules="rules" label-width="120px">
       <el-form-item label="部门名称" prop="name">
         <el-input
           v-model="formData.name"
@@ -42,14 +42,14 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="6">
-        <el-button type="primary" size="small">确定</el-button>
+        <el-button type="primary" size="small" @click="btnOk">确定</el-button>
         <el-button size="small">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
 </template>
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartments, addDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
   name: '',
@@ -135,6 +135,14 @@ export default {
     async getEmployeeSimple() {
       this.peoples = await getEmployeeSimple()
       // console.log(this.peoples)
+    },
+    btnOk() {
+      this.$refs.deptForm.validate(async(isOk) => {
+        if (isOk) {
+          await addDepartments({ ...this.formData, pid: this.treeNode.id })
+          this.$emit('addDepts')
+        }
+      })
     }
   }
 }
