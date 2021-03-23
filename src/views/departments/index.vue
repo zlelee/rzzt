@@ -2,15 +2,35 @@
   <div class="dashboard-container">
     <div class="app-container">
       <el-card class="tree-card">
-        <tree-item :tree-node="company" :is-root="true" @delDepts="getDepartments" @addDepts="addDepts" />
-        <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
+        <tree-item
+          :tree-node="company"
+          :is-root="true"
+          @delDepts="getDepartments"
+          @addDepts="addDepts"
+        />
+        <el-tree
+          :data="departs"
+          :props="defaultProps"
+          :default-expand-all="true"
+        >
           <!-- 传入内容 插槽内容 会循环多次 有多少节点 就循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据   data 每个节点的数据对象-->
-          <tree-item slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" @editDepts="editDepts" />
+          <tree-item
+            slot-scope="{ data }"
+            :tree-node="data"
+            @delDepts="getDepartments"
+            @addDepts="addDepts"
+            @editDepts="editDepts"
+          />
         </el-tree>
       </el-card>
       <!-- 新增弹窗 -->
-      <add-depts ref="addDept" :show-dialog.sync="showDialog" :tree-node="node" @addDepts="getDepartments" />
+      <add-depts
+        ref="addDept"
+        :show-dialog.sync="showDialog"
+        :tree-node="node"
+        @addDepts="getDepartments"
+      />
     </div>
   </div>
 </template>
@@ -23,7 +43,8 @@ import { tranListToTreeData } from '@/utils/index'
 export default {
   name: 'Departments',
   components: {
-    treeItem, addDepts
+    treeItem,
+    addDepts
   },
   data() {
     return {
@@ -53,7 +74,7 @@ export default {
     editDepts(node) {
       this.node = node
       this.showDialog = true
-      this.$refs.addDept.getDepartDetail(node.id)
+      this.$refs.addDept.getDepartDetail()
     }
   }
 }

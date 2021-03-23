@@ -167,8 +167,10 @@ export default {
       this.$refs.deptForm.resetFields() // 重置表单数据和校验规则
       this.$emit('update:showDialog', false)
     },
-    async getDepartDetail(id) {
-      this.formData = await getDepartDetail(id)
+    getDepartDetail() {
+      this.$nextTick(async() => {
+        this.formData = await getDepartDetail(this.treeNode.id)
+      })
     }
   }
 }
