@@ -59,7 +59,7 @@
 
 </template>
 <script>
-import { getDepartments, addDepartments } from '@/api/departments'
+import { getDepartments, addDepartments, getDepartDetail } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
   name: '',
@@ -166,6 +166,9 @@ export default {
     btnCancel() {
       this.$refs.deptForm.resetFields() // 重置表单数据和校验规则
       this.$emit('update:showDialog', false)
+    },
+    async getDepartDetail(id) {
+      this.formData = await getDepartDetail(id)
     }
   }
 }

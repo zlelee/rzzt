@@ -56,6 +56,7 @@ export default {
         this.$emit('addDepts', this.treeNode)
       } else if (command === 'edit') {
         // 编辑部门
+        this.$emit('editDepts', this.treeNode)
       } else {
         // 删除部门
         this.$confirm('确认要删除该部门吗?', '提示', {
