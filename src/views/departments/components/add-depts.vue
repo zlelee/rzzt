@@ -59,7 +59,7 @@
 
 </template>
 <script>
-import { getDepartments, addDepartments, getDepartDetail } from '@/api/departments'
+import { getDepartments, addDepartments, getDepartDetail, updateDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
   name: '',
@@ -161,9 +161,16 @@ export default {
     btnOk() {
       this.$refs.deptForm.validate(async isOk => {
         if (isOk) {
-          await addDepartments({ ...this.formData, pid: this.treeNode.id })
-          this.$emit('addDepts')
-          this.$emit('update:showDialog', false)
+          if (this.formData.id) {
+            // 编辑
+            await updateDepartments(this.formData)
+          } else {
+            // 新增
+            await addDepartments({ ...this.formData, pid: this.treeNode.id })
+          }
+
+          this.$emit('addDepts') // 通知父组件重新获取一遍数据
+          this.$emit('update:showDialog', false) // 关闭弹出层
         }
       })
     },
