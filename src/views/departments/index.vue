@@ -6,7 +6,7 @@
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <!-- 传入内容 插槽内容 会循环多次 有多少节点 就循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据   data 每个节点的数据对象-->
-          <tree-item slot-scope="{data}" :tree-node="data" />
+          <tree-item slot-scope="{data}" :tree-node="data" @delDepts="getDepartments" />
         </el-tree>
       </el-card>
     </div>

@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { delDepartments } from '@/api/departments'
 export default {
   name: '',
   props: {
@@ -56,6 +57,15 @@ export default {
         // 编辑部门
       } else {
         // 删除部门
+        this.$confirm('确认要删除该部门吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async() => {
+          await delDepartments(this.treeNode.id)
+          this.$message.success('删除部门成功')
+          this.$emit('delDepts')
+        }).catch(e => e)
       }
     }
   }
