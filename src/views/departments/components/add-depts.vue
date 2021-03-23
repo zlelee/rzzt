@@ -141,6 +141,7 @@ export default {
         if (isOk) {
           await addDepartments({ ...this.formData, pid: this.treeNode.id })
           this.$emit('addDepts')
+          this.$emit('update:showDialog', false)
         }
       })
     }
