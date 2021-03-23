@@ -23,6 +23,7 @@
           v-model="formData.manager"
           style="width:80%"
           placeholder="请选择"
+          @focus="getEmployeeSimple"
         />
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
@@ -47,6 +48,7 @@
 </template>
 <script>
 import { getDepartments } from '@/api/departments'
+import { getEmployeeSimple } from '@/api/employees'
 export default {
   name: '',
   props: {
@@ -122,11 +124,17 @@ export default {
             message: '部门介绍要求1-50个字符'
           }
         ]
-      }
+      },
+      peoples: [] // 员工列表
     }
   },
 
-  methods: {}
+  methods: {
+    async getEmployeeSimple() {
+      this.peoples = await getEmployeeSimple()
+      // console.log(this.peoples)
+    }
+  }
 }
 </script>
 
