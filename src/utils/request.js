@@ -5,6 +5,7 @@ import { getTimeStamp } from './auth'
 import router from '@/router'
 
 const timeout = 3600 // token的超时事件
+// 创建一个axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 环境变量
   timeout: 5000 // 发送请求的超时时间
