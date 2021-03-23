@@ -53,6 +53,7 @@ export default {
     operateDepts(command) {
       if (command === 'add') {
         // 添加部门
+        this.$emit('addDepts', this.treeNode)
       } else if (command === 'edit') {
         // 编辑部门
       } else {

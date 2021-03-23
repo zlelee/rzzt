@@ -10,7 +10,7 @@
         </el-tree>
       </el-card>
       <!-- 新增弹窗 -->
-      <add-depts />
+      <add-depts :show-dialog="showDialog" />
     </div>
   </div>
 </template>
@@ -31,7 +31,9 @@ export default {
         label: 'name'
       },
       departs: [],
-      company: {}
+      company: {},
+      showDialog: false,
+      node: null // 当前点击的部门信息
     }
   },
   created() {
