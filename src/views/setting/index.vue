@@ -21,8 +21,8 @@
               <el-table-column align="center" label="操作">
                 <template slot-scope="{row}">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary">编辑</el-button>
-                  <el-button size="small" type="danger" @click="delRole(row)">删除</el-button>
+                  <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
+                  <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -62,12 +62,29 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+      <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
+        <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px">
+          <el-form-item label="角色名称" prop="name">
+            <el-input v-model="roleForm.name" />
+          </el-form-item>
+          <el-form-item label="角色描述">
+            <el-input v-model="roleForm.description" />
+          </el-form-item>
+        </el-form>
+        <!-- 底部 -->
+        <el-row slot="footer" type="flex" justify="center">
+          <el-col :span="6">
+            <el-button size="small" @click="btnCancel">取消</el-button>
+            <el-button size="small" type="primary" @click="btnOk">确定</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, deleteRole } from '@/api/setting'
+import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail } from '@/api/setting'
 export default {
   name: 'Setting',
   data() {
@@ -83,6 +100,14 @@ export default {
         companyAddress: '',
         mailbox: '',
         remarks: ''
+      },
+      showDialog: false,
+      roleForm: {
+        name: '',
+        description: ''
+      },
+      rules: {
+        name: [{ required: true, tigger: blur, message: '角色名称不能为空' }]
       }
     }
   },
@@ -105,13 +130,33 @@ export default {
     async getCompanyInfo() {
       this.formData = await getCompanyInfo(this.$store.state.user.userInfo.companyId)
     },
-    async delRole(row) {
+    async delRole(id) {
       try {
         await this.$confirm('确认删除该角色吗')
         // 只有点击了确定 才能进入到下方
-        await deleteRole(row.id) // 调用删除接口
+        await deleteRole(id) // 调用删除接口
         this.getRoleList() // 重新加载数据
         this.$message.success('删除角色成功')
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    btnCancel() {
+      this.roleForm = {}
+      this.$refs.roleForm.resetFields()
+      this.showDialog = false
+    },
+    btnOk() {
+      if (this.roleForm.id) {
+        // 编辑
+      } else {
+        // 增加
+      }
+    },
+    async editRole(id) {
+      try {
+        this.roleForm = await getRoleDetail(id)
+        this.showDialog = true
       } catch (err) {
         console.log(err)
       }
