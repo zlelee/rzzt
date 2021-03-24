@@ -11,6 +11,7 @@
                 icon="el-icon-plus"
                 size="small"
                 type="primary"
+                @click="showDialog = true"
               >新增角色</el-button>
             </el-row>
             <!-- 表格 -->
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail } from '@/api/setting'
+import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail, addRole } from '@/api/setting'
 export default {
   name: 'Setting',
   data() {
@@ -154,6 +155,7 @@ export default {
           await updateRole(this.roleForm)
         } else {
         // 增加
+          await addRole(this.roleForm)
         }
         this.$message.success('操作成功')
         this.getRoleList()
