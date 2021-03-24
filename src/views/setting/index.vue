@@ -14,11 +14,11 @@
               >新增角色</el-button>
             </el-row>
             <!-- 表格 -->
-            <el-table border="">
-              <el-table-column label="序号" width="120" />
-              <el-table-column label="角色名称" width="240" />
-              <el-table-column label="描述" />
-              <el-table-column label="操作">
+            <el-table border :data="roleList">
+              <el-table-column align="center" type="index" label="序号" width="120" />
+              <el-table-column align="center" prop="name" label="角色名称" width="240" />
+              <el-table-column align="center" prop="description" label="描述" />
+              <el-table-column align="center" label="操作">
                 <el-button size="small" type="success">分配权限</el-button>
                 <el-button size="small" type="primary">编辑</el-button>
                 <el-button size="small" type="danger">删除</el-button>
@@ -27,7 +27,13 @@
             <!-- 分页组件 -->
             <el-row type="flex" justify="center" align="middle" style="height: 60px">
               <!-- 分页组件 -->
-              <el-pagination layout="prev,pager,next" />
+              <el-pagination
+                layout="prev,pager,next"
+                :total="total"
+                :current-page="pageObj.page"
+                :page-size="pageObj.pagesize"
+                @current-change="changePage"
+              />
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="公司信息">
@@ -52,7 +58,6 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-
         </el-tabs>
       </el-card>
     </div>
@@ -67,14 +72,24 @@ export default {
       roleList: [], // 角色列表
       pageObj: {
         page: 1,
-        pagesize: 10
+        pagesize: 2
       },
       total: 0
     }
   },
   created() {
+    this.getRoleList()
   },
   methods: {
+    async getRoleList() {
+      const { total, rows } = await getRoleList(this.pageObj)
+      this.total = total
+      this.roleList = rows
+    },
+    changePage(newPage) {
+      this.pageObj.page = newPage
+      this.getRoleList()
+    }
   }
 }
 </script>
