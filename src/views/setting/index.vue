@@ -146,11 +146,20 @@ export default {
       this.$refs.roleForm.resetFields()
       this.showDialog = false
     },
-    btnOk() {
-      if (this.roleForm.id) {
+    async btnOk() {
+      try {
+        await this.$refs.roleForm.validate()
+        if (this.roleForm.id) {
         // 编辑
-      } else {
+          await updateRole(this.roleForm)
+        } else {
         // 增加
+        }
+        this.$message.success('操作成功')
+        this.getRoleList()
+        this.showDialog = false
+      } catch (err) {
+        console.log(err)
       }
     },
     async editRole(id) {
