@@ -145,10 +145,22 @@ export default {
       }
       // 懒加载
       import('@/vendor/Export2Excel').then(async excel => {
+        const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
+        const data = this.formatJson(headers, rows)
         excel.export_json_to_excel({
           header: Object.keys(headers),
-          data: [],
-          filename: '员工信息表'
+          data,
+          filename: '员工信息表',
+          autoWidth: true,
+          bookType: 'xlsx'
+
+        })
+      })
+    },
+    formatJson(headers, rows) {
+      return rows.map(item => {
+        return Object.keys(headers).map(key => {
+          return item[headers[key]]
         })
       })
     }
