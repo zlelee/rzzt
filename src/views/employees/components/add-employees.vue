@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增员工" :visible="true">
+  <el-dialog title="新增员工" :visible="showDialog">
     <!-- 表单 -->
     <el-form label-width="120px">
       <el-form-item label="姓名">
@@ -39,7 +39,12 @@
 <script>
 export default {
   name: 'AddEployees',
-
+  props: {
+    showDialog: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
     }
