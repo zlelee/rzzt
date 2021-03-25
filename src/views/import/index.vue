@@ -30,13 +30,34 @@ export default {
         const userInfo = {}
         console.log(Object.keys(user))
         Object.keys(user).forEach(key => {
-          userInfo[userRelations[key]] = user[key]
+          if (userRelations[key] === 'timeOfEntry' || userRelations[key] === 'correctionTime') {
+            userInfo[userRelations[key]] = new Date(this.formatDate(user[key], '/'))
+            return
+          } else {
+            userInfo[userRelations[key]] = user[key]
+          }
         })
         return userInfo
       })
       await importEmployee(arr)
       this.$message.success('导入excel成功')
       this.$router.back()
+    },
+    // excel日期格式转换 numb为数字，format为拼接符“-”
+    formatDate(numb, format) {
+      if (numb !== undefined) {
+        const time = new Date((numb - 1) * 24 * 3600000 + 1)
+        time.setYear(time.getFullYear() - 70)
+        const year = time.getFullYear() + ''
+        const month = time.getMonth() + 1 + ''
+        const date = time.getDate() + ''
+        if (format && format.length === 1) {
+          return year + format + month + format + date
+        }
+        return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
+      } else {
+        return undefined
+      }
     }
   }
 }
