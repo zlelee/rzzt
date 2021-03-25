@@ -2,11 +2,24 @@
   <div class="dashboard-container">
     <div class="app-container">
       <page-tools :show-before="true">
-        <span slot="before">共166条记录</span>
+        <span slot="before">共{{ page.total }}条记录</span>
         <template slot="after">
-          <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
-          <el-button size="small" type="danger">导出</el-button>
-          <el-button icon="plus" type="primary" size="small" @click="showDialog = true">新增员工</el-button>
+          <el-button
+            size="small"
+            type="warning"
+            @click="$router.push('/import?type=user')"
+          >导入</el-button>
+          <el-button
+            size="small"
+            type="danger"
+            @click="exportData"
+          >导出</el-button>
+          <el-button
+            icon="plus"
+            type="primary"
+            size="small"
+            @click="showDialog = true"
+          >新增员工</el-button>
         </template>
       </page-tools>
       <!-- 放置表格和分页 -->
@@ -117,6 +130,27 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    exportData() {
+      //  做操作
+      // 表头对应关系
+      const headers = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      // 懒加载
+      import('@/vendor/Export2Excel').then(async excel => {
+        excel.export_json_to_excel({
+          header: Object.keys(headers),
+          data: [],
+          filename: '员工信息表'
+        })
+      })
     }
   }
 }
