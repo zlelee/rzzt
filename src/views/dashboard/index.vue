@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <upload-excel />
+      欢迎
     </div>
   </div>
 </template>
