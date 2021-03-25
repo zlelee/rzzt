@@ -1,11 +1,12 @@
 <template>
   <div>
     <!-- 公共导入组件 -->
-    <upload-excel />
+    <upload-excel :on-success="success" />
   </div>
 </template>
 
 <script>
+// import { importEmployee } from '@/api/employees'
 export default {
   name: '',
 
@@ -14,7 +15,11 @@ export default {
     }
   },
 
-  methods: {}
+  methods: {
+    success({ header, results }) {
+
+    }
+  }
 }
 </script>
 
