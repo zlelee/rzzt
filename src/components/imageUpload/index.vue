@@ -40,15 +40,6 @@ export default {
       // 这里应该弹出一个层 层里是点击的图片地址
       this.imgUrl = file.url
       this.showDialog = true
-    },
-    handleRemove(file, fileList) {
-      // file是点击删除的文件
-    //   将原来的文件给排除掉了 剩下的就是最新的数组了
-      // this.fileList.filter(item => item.uid !== file.uid)
-      this.fileList = fileList
-    },
-    changeFile(file, fileList) {
-      this.fileList.push({ url: file.url })
     }
   }
 }
