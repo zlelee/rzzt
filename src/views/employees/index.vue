@@ -137,36 +137,47 @@ export default {
       //  做操作
       // 表头对应关系
       const headers = {
-        '姓名': 'username',
-        '手机号': 'mobile',
-        '入职日期': 'timeOfEntry',
-        '聘用形式': 'formOfEmployment',
-        '转正日期': 'correctionTime',
-        '工号': 'workNumber',
-        '部门': 'departmentName'
+        姓名: 'username',
+        手机号: 'mobile',
+        入职日期: 'timeOfEntry',
+        聘用形式: 'formOfEmployment',
+        转正日期: 'correctionTime',
+        工号: 'workNumber',
+        部门: 'departmentName'
       }
       // 懒加载
       import('@/vendor/Export2Excel').then(async excel => {
-        const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
+        const { rows } = await getEmployeeList({
+          page: 1,
+          size: this.page.total
+        })
         const data = this.formatJson(headers, rows)
+        const multiHeader = [['姓名', '主要信息', '', '', '', '', '部门']]
+        const merges = ['A1:A2', 'B1:F1', 'G1:G2']
         excel.export_json_to_excel({
           header: Object.keys(headers),
           data,
           filename: '员工信息表',
           autoWidth: true,
-          bookType: 'xlsx'
-
+          bookType: 'xlsx',
+          multiHeader,
+          merges
         })
       })
     },
     formatJson(headers, rows) {
       return rows.map(item => {
         return Object.keys(headers).map(key => {
-          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+          if (
+            headers[key] === 'timeOfEntry' ||
+            headers[key] === 'correctionTime'
+          ) {
             return formatDate(item[headers[key]])
           } else if (headers[key] === 'formOfEmployment') {
             console.log(employees.hireType)
-            const obj = employees.hireType.find(obj => obj.id === item[headers[key]])
+            const obj = employees.hireType.find(
+              obj => obj.id === item[headers[key]]
+            )
             return obj ? obj.value : '未知'
           }
           return item[headers[key]]
