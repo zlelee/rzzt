@@ -2,6 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       欢迎
+      <ImageUpload />
     </div>
   </div>
 </template>
