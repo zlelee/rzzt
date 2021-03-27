@@ -84,6 +84,8 @@
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployees from './components/add-employees'
+import { formatDate } from '@/filters'
+import employees from '@/api/constant/employees'
 export default {
   name: 'Employees',
   components: {
@@ -160,6 +162,13 @@ export default {
     formatJson(headers, rows) {
       return rows.map(item => {
         return Object.keys(headers).map(key => {
+          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+            return formatDate(item[headers[key]])
+          } else if (headers[key] === 'formOfEmployment') {
+            console.log(employees.hireType)
+            const obj = employees.hireType.find(obj => obj.id === item[headers[key]])
+            return obj ? obj.value : '未知'
+          }
           return item[headers[key]]
         })
       })

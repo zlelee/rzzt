@@ -26,10 +26,8 @@ export default {
           '转正日期': 'correctionTime',
           '工号': 'workNumber'
         }
-        console.log(results)
         const arr = results.map(user => {
           const userInfo = {}
-          console.log(Object.keys(user))
           Object.keys(user).forEach(key => {
             if (userRelations[key] === 'timeOfEntry' || userRelations[key] === 'correctionTime') {
               userInfo[userRelations[key]] = new Date(this.formatDate(user[key], '/'))
