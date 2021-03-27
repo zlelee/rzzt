@@ -27,8 +27,14 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="个人详情" />
-          <el-tab-pane label="岗位信息" />
+          <el-tab-pane label="个人详情">
+            <!-- 放置个人详情 -->
+            <component :is="userComponent" />
+            <!-- <user-info /> -->
+          </el-tab-pane>
+          <el-tab-pane label="岗位详情">
+            <!-- 放置岗位详情 -->
+          </el-tab-pane>
         </el-tabs>
       </el-card>
     </div>
@@ -38,11 +44,16 @@
 <script>
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
+import userInfo from './components/user-info'
 export default {
   name: '',
-
+  components: {
+    userInfo
+  },
   data() {
     return {
+      userComponent: 'user-info',
+      JobInfo: 'job-info',
       rules: {
         username: [
           { required: true, message: '姓名不能为空', trigger: 'blur' }
