@@ -5,6 +5,7 @@
       :on-remove="handleRemove"
       :on-change="changeFile"
       :file-list="fileList"
+      :before-upload="beforeUpload"
       list-type="picture-card"
       action="#"
       :limit="1"
@@ -49,6 +50,20 @@ export default {
     },
     changeFile(file, fileList) {
       this.fileList.push({ url: file.url })
+    },
+    beforeUpload(file) {
+      const types = ['image/jpeg', 'image/gif', 'image/bmp', 'image/png']
+      if (!types.includes(file.type)) {
+        // 上传的格式不正确
+        this.$message.error('上传图片只能是 JPG、GIF、BMP、PNG 格式!')
+        return false
+      }
+      const maxSize = 5 * 1024 * 1024
+      if (file.size > maxSize) {
+        this.$message.error('图片大小最大不能超过5M')
+        return false
+      }
+      return true
     }
   }
 }
