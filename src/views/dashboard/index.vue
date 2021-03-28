@@ -10,7 +10,9 @@
 <script>
 export default {
   name: 'Dashboard',
-  computed: {}
+  computed: {},
+  created() {
+  }
 }
 </script>
 

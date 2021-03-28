@@ -33,7 +33,9 @@ export default {
     return {
       fileList: [{ url: 'https://img2.baidu.com/it/u=3355464299,584008140&fm=26&fmt=auto&gp=0.jpg' }], // 图片地址设置为数组
       showDialog: false, // 控制显示弹层
-      imgUrl: ''
+      imgUrl: '',
+      currentFileUid: null,
+      showPercent: false // 默认不显示进度条
     }
   },
   computed: {
@@ -69,7 +71,8 @@ export default {
         this.$message.error('图片大小最大不能超过5M')
         return false
       }
-
+      //   已经确定当前上传的就是当前的这个file了
+      this.currentFileUid = file.uid
       return true
     },
     upload(params) {
@@ -80,8 +83,11 @@ export default {
           Region: 'ap-beijing', // 地域
           Key: params.file.uid.toString(), // 唯一标识
           Body: params.file, // 上传文件对象
-          StorageClass: 'STANDARD' // 上传的模式类型 直接默认 标准模式即可
-          // 上传到腾讯云 =》 哪个存储桶 哪个地域的存储桶 文件  格式  名称 回调
+          StorageClass: 'STANDARD', // 上传的模式类型 直接默认 标准模式即可
+          // 进度条
+          onProgress: (params) => {
+            this.percent = params.percent * 100
+          }
         }, (err, data) => {
           // data返回数据之后 应该如何处理
           // console.log(err || data)
