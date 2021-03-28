@@ -58,7 +58,8 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
-
+            <!-- 放置上传图片 -->
+            <image-upload ref="staffPhoto" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -87,10 +88,15 @@
         </el-form-item>
         <!-- 个人头像 -->
         <!-- 员工照片 -->
-
-        <el-form-item label="员工照片">
-          <!-- 放置上传图片 -->
-        </el-form-item>
+        <el-row class="inline-info">
+          <el-col :span="12">
+            <el-form-item label="员工照片">
+              <!-- 放置上传图片 -->
+              <!-- ref不要重名 -->
+              <image-upload ref="myStaffPhoto" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
             <el-option
@@ -364,6 +370,9 @@ export default {
   methods: {
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取员工数据
+      if (this.formData.staffPhoto) {
+        this.$refs.myStaffPhoto.fileList = [{ url: this.formData.staffPhoto, upload: true }]
+      }
     },
     async savePersonal() {
       await updatePersonal({ ...this.formData, id: this.userId })
@@ -376,6 +385,10 @@ export default {
     },
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
+      if (this.userInfo.staffPhoto) {
+        // 这里我们赋值，同时需要给赋值的地址一个标记 upload: true
+        this.$refs.staffPhoto.fileList = [{ url: this.userInfo.staffPhoto, upload: true }]
+      }
     }
   }
 }
