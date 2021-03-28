@@ -14,6 +14,8 @@
     >
       <i class="el-icon-plus" />
     </el-upload>
+    <!-- 进度条 -->
+    <el-progress v-if="showPercent" style="width: 180px" :percentage="percent" />
     <el-dialog title="图片" :visible.sync="showDialog">
       <img :src="imgUrl" style="width:100%" alt="">
     </el-dialog>
@@ -73,6 +75,7 @@ export default {
       }
       //   已经确定当前上传的就是当前的这个file了
       this.currentFileUid = file.uid
+      this.showPercent = true
       return true
     },
     upload(params) {
@@ -108,6 +111,8 @@ export default {
               return item
             })
           }
+          this.showPercent = false // 隐藏进度条
+          this.percent = 0 // 进度归0
           // 将上传成功的地址 回写到了fileList中 fileList变化  =》 upload组件 就会根据fileList的变化而去渲染视图
         }
         )
