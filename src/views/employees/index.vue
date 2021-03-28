@@ -29,7 +29,7 @@
           <el-table-column label="姓名" sortable="" prop="username" />
           <el-table-column label="头像" sortable="">
             <template slot-scope="{row}">
-              <img v-imagerror="require('@/assets/common/bigUserHeader.png')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px">
+              <img v-imagerror="require('@/assets/common/bigUserHeader.png')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px; cursor: pointer" @click="showQrCode(row.staffPhoto)">
             </template>
           </el-table-column>
           <el-table-column label="工号" sortable="" prop="workNumber" />
@@ -82,6 +82,11 @@
         </el-row>
       </el-card>
       <add-employees :show-dialog.sync="showDialog" />
+      <el-dialog title="用户头像" :visible.sync="showCodeDialog">
+        <el-row type="flex" justify="center">
+          <canvas ref="myCanvas" />
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -91,6 +96,7 @@ import EmployeeEnum from '@/api/constant/employees'
 import AddEmployees from './components/add-employees'
 import { formatDate } from '@/filters'
 import employees from '@/api/constant/employees'
+import qrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: {
@@ -105,7 +111,8 @@ export default {
         size: 10,
         total: 0 // 总数
       },
-      showDialog: false
+      showDialog: false,
+      showCodeDialog: false // 显示二维码的弹窗
     }
   },
   created() {
@@ -188,6 +195,14 @@ export default {
           return item[headers[key]]
         })
       })
+    },
+    showQrCode(url) {
+      if (url) {
+        this.showCodeDialog = true
+        this.$nextTick(() => {
+          qrCode.toCanvas(this.$refs.myCanvas, url)
+        })
+      }
     }
   }
 }
