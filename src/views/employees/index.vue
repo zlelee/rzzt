@@ -202,6 +202,8 @@ export default {
         this.$nextTick(() => {
           qrCode.toCanvas(this.$refs.myCanvas, url)
         })
+      } else {
+        this.$message.warning('该用户还未上传头像')
       }
     }
   }
