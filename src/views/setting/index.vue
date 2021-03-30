@@ -21,7 +21,7 @@
               <el-table-column align="center" prop="description" label="描述" />
               <el-table-column align="center" label="操作">
                 <template slot-scope="{row}">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="success" @click="editPermission(row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
                   <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
                 </template>
@@ -88,6 +88,8 @@
 import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail, addRole } from '@/api/setting'
 export default {
   name: 'Setting',
+  components: {
+  },
   data() {
     return {
       roleList: [], // 角色列表
@@ -102,14 +104,16 @@ export default {
         mailbox: '',
         remarks: ''
       },
-      showDialog: false,
+      showDialog: false, // 编辑弹窗
+      showRoleDialog: false, // 角色权限弹窗
       roleForm: {
         name: '',
         description: ''
       },
       rules: {
         name: [{ required: true, tigger: blur, message: '角色名称不能为空' }]
-      }
+      },
+      userId: null
     }
   },
   computed: {
@@ -168,6 +172,15 @@ export default {
       try {
         this.roleForm = await getRoleDetail(id)
         this.showDialog = true
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async editPermission(id) {
+      try {
+        this.userId = id // props传值 是异步的
+        await this.$refs.assignRole.getUserDetailById(id) // 父组件调用子组件方法
+        this.showRoleDialog = true
       } catch (err) {
         console.log(err)
       }
