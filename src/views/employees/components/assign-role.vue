@@ -4,9 +4,7 @@
     <!-- 分配角色 -->
     <el-checkbox-group v-model="roleIds">
       <el-checkbox v-for="item in list" :key="item.id" :label="item.id">
-        {{
-          item.name
-        }}
+        {{ item.name }}
       </el-checkbox>
     </el-checkbox-group>
     <el-row slot="footer" type="flex" justify="center">
@@ -57,4 +55,3 @@ export default {
   }
 }
 </script>
-
