@@ -16,19 +16,46 @@
             </el-row>
             <!-- 表格 -->
             <el-table border :data="roleList">
-              <el-table-column align="center" type="index" label="序号" width="120" />
-              <el-table-column align="center" prop="name" label="角色名称" width="240" />
+              <el-table-column
+                align="center"
+                type="index"
+                label="序号"
+                width="120"
+              />
+              <el-table-column
+                align="center"
+                prop="name"
+                label="角色名称"
+                width="240"
+              />
               <el-table-column align="center" prop="description" label="描述" />
               <el-table-column align="center" label="操作">
-                <template slot-scope="{row}">
-                  <el-button size="small" type="success" @click="editPermission(row.id)">分配权限</el-button>
-                  <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
-                  <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
+                <template slot-scope="{ row }">
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="editPermission(row.id)"
+                  >分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="primary"
+                    @click="editRole(row.id)"
+                  >编辑</el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="delRole(row.id)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
             <!-- 分页组件 -->
-            <el-row type="flex" justify="center" align="middle" style="height: 60px">
+            <el-row
+              type="flex"
+              justify="center"
+              align="middle"
+              style="height: 60px"
+            >
               <!-- 分页组件 -->
               <el-pagination
                 layout="prev,pager,next"
@@ -48,23 +75,46 @@
             />
             <el-form label-width="120px" style="margin-top:50px">
               <el-form-item label="公司名称">
-                <el-input v-model="formData.name" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.name"
+                  disabled
+                  style="width:400px"
+                />
               </el-form-item>
               <el-form-item label="公司地址">
-                <el-input v-model="formData.companyAddress" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.companyAddress"
+                  disabled
+                  style="width:400px"
+                />
               </el-form-item>
               <el-form-item label="邮箱">
-                <el-input v-model="formData.mailbox" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.mailbox"
+                  disabled
+                  style="width:400px"
+                />
               </el-form-item>
               <el-form-item label="备注">
-                <el-input v-model="formData.remarks" type="textarea" :rows="3" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.remarks"
+                  type="textarea"
+                  :rows="3"
+                  disabled
+                  style="width:400px"
+                />
               </el-form-item>
             </el-form>
           </el-tab-pane>
         </el-tabs>
       </el-card>
       <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
-        <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px">
+        <el-form
+          ref="roleForm"
+          :model="roleForm"
+          :rules="rules"
+          label-width="120px"
+        >
           <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleForm.name" />
           </el-form-item>
@@ -76,7 +126,42 @@
         <el-row slot="footer" type="flex" justify="center">
           <el-col :span="6">
             <el-button size="small" @click="btnCancel">取消</el-button>
-            <el-button size="small" type="primary" @click="btnOk">确定</el-button>
+            <el-button
+              size="small"
+              type="primary"
+              @click="btnOk"
+            >确定</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
+      <el-dialog
+        title="分配权限"
+        :visible="showPermDialog"
+        @close="btnPermCancel"
+      >
+        <!-- 权限是一颗树 -->
+        <!-- 将数据绑定到组件上 -->
+        <!-- check-strictly 如果为true 那表示父子勾选时  不互相关联 如果为false就互相关联 -->
+        <!-- id作为唯一标识 -->
+        <el-tree
+          ref="permTree"
+          :data="permData"
+          :props="defaultProps"
+          :show-checkbox="true"
+          :check-strictly="true"
+          :default-expand-all="true"
+          :default-checked-keys="selectCheck"
+          node-key="id"
+        />
+        <!-- 确定 取消 -->
+        <el-row slot="footer" type="flex" justify="center">
+          <el-col :span="6">
+            <el-button
+              type="primary"
+              size="small"
+              @click="btnPermOK"
+            >确定</el-button>
+            <el-button size="small" @click="btnPermCancel">取消</el-button>
           </el-col>
         </el-row>
       </el-dialog>
@@ -85,11 +170,20 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail, addRole } from '@/api/setting'
+import {
+  getRoleList,
+  getCompanyInfo,
+  deleteRole,
+  updateRole,
+  getRoleDetail,
+  addRole,
+  assignPerm
+} from '@/api/setting'
+import { tranListToTreeData } from '@/utils'
+import { getPermissionList } from '@/api/permission'
 export default {
   name: 'Setting',
-  components: {
-  },
+  components: {},
   data() {
     return {
       roleList: [], // 角色列表
@@ -113,11 +207,17 @@ export default {
       rules: {
         name: [{ required: true, tigger: blur, message: '角色名称不能为空' }]
       },
-      userId: null
+      userId: null,
+      showPermDialog: false, // 显示权限弹层
+      permData: {},
+      defaultProps: {
+        label: 'name'
+      },
+      selectCheck: [],
+      roleId: null
     }
   },
-  computed: {
-  },
+  computed: {},
   created() {
     this.getRoleList()
     this.getCompanyInfo()
@@ -133,7 +233,9 @@ export default {
       this.getRoleList()
     },
     async getCompanyInfo() {
-      this.formData = await getCompanyInfo(this.$store.state.user.userInfo.companyId)
+      this.formData = await getCompanyInfo(
+        this.$store.state.user.userInfo.companyId
+      )
     },
     async delRole(id) {
       try {
@@ -155,10 +257,10 @@ export default {
       try {
         await this.$refs.roleForm.validate()
         if (this.roleForm.id) {
-        // 编辑
+          // 编辑
           await updateRole(this.roleForm)
         } else {
-        // 增加
+          // 增加
           await addRole(this.roleForm)
         }
         this.$message.success('操作成功')
@@ -178,18 +280,26 @@ export default {
     },
     async editPermission(id) {
       try {
-        this.userId = id // props传值 是异步的
-        await this.$refs.assignRole.getUserDetailById(id) // 父组件调用子组件方法
-        this.showRoleDialog = true
+        this.permData = tranListToTreeData(await getPermissionList(), '0')
+        this.roleId = id
+        const { permIds } = await getRoleDetail(id)
+        this.selectCheck = permIds
+        this.showPermDialog = true
       } catch (err) {
         console.log(err)
       }
+    },
+    btnPermCancel() {
+      this.selectCheck = []
+      this.showPermDialog = false
+    },
+    async btnPermOK() {
+      await assignPerm({ id: this.roleId, permIds: this.$refs.permTree.getCheckedKeys() })
+      this.$message.success('操作成功')
+      this.showPermDialog = false
     }
   }
-
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
