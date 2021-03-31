@@ -1,4 +1,4 @@
-import { constantRoutes } from '@/router'
+import { constantRoutes, asyncRoutes } from '@/router'
 
 const state = {
   routes: constantRoutes // 所有人默认的静态路由
@@ -8,7 +8,14 @@ const mutations = {
     state.routes = [...constantRoutes, ...payload]
   }
 }
-const actions = {}
+const actions = {
+  filterRoute(context, menus) {
+    const routes = []
+    routes.push(asyncRoutes.filter(item => menus.includes(item.name)))
+    context.commit('setRoutes', routes)
+    return routes
+  }
+}
 export default {
   namespaced: true,
   state,
