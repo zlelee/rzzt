@@ -33,6 +33,7 @@ const actions = {
     const result = await getUserInfo()
     const baseResult = await getUserDetailById(result.userId)
     context.commit('setUserInfo', { ...result, ...baseResult })
+    return result
   },
   logout(context) {
     context.commit('removeToken')

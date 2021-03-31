@@ -13,7 +13,10 @@ router.beforeEach(async(to, from, next) => {
       next('/') // 跳到首页
     } else {
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+        const routes = await store.dispatch('permission/filterRoute', roles.menus)
+        router.addRoutes(routes)
+        next(to.path)
       }
       next() // 放行
     }
