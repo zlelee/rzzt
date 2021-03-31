@@ -13,8 +13,11 @@ router.beforeEach(async(to, from, next) => {
       next('/') // 跳到首页
     } else {
       if (!store.getters.userId) {
+        // 获取用户信息
         const { roles } = await store.dispatch('user/getUserInfo')
+        // 加载动态路由
         const routes = await store.dispatch('permission/filterRoute', roles.menus)
+        // 添加动态路由
         router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
         next(to.path)
       }

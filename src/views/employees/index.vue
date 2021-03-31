@@ -18,6 +18,7 @@
             icon="plus"
             type="primary"
             size="small"
+            :disabled="!checkPermission('POINT-USER-ADD')"
             @click="showDialog = true"
           >新增员工</el-button>
         </template>

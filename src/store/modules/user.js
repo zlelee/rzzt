@@ -45,7 +45,7 @@ const actions = {
     // 重置路由
     resetRouter()
     // 清空 routes 的动态路由
-    context.commit('permission/setRouter', [], { root: true })
+    context.commit('permission/setRoutes', [], { root: true })
   }
 }
 export default {
