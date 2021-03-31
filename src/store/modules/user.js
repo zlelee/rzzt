@@ -1,6 +1,7 @@
 import { login } from '@/api/user'
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { getUserInfo, getUserDetailById } from '@/api/user'
+import { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   userInfo: {} // 设置一个空对象而不是null, 因为后面要通过userinfo.username的方式取数据,避免了报错
@@ -35,9 +36,16 @@ const actions = {
     context.commit('setUserInfo', { ...result, ...baseResult })
     return result
   },
+  // 退出登录
   logout(context) {
+    // 清除token
     context.commit('removeToken')
+    // 清除用户信息
     context.commit('removeUserInfo')
+    // 重置路由
+    resetRouter()
+    // 清空 routes 的动态路由
+    context.commit('permission/setRouter', [], { root: true })
   }
 }
 export default {
