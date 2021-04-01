@@ -18,9 +18,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$refs.myChart)
     const myChart = echarts.init(this.$refs.myChart)
-    console.log(myChart)
     myChart.setOption({
       title: {
         text: '基础雷达图'
