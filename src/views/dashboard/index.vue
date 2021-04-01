@@ -89,8 +89,14 @@
               @click="dimissionDialogVisible = true"
             >加班离职</el-button>
             <el-button class="sideBtn">请假调休</el-button>
-            <el-button class="sideBtn" @click="$router.push('/users/approvals')">审批列表</el-button>
-            <el-button class="sideBtn" @click="$router.push('/users/info')">我的信息</el-button>
+            <el-button
+              class="sideBtn"
+              @click="$router.push('/users/approvals')"
+            >审批列表</el-button>
+            <el-button
+              class="sideBtn"
+              @click="$router.push('/users/info')"
+            >我的信息</el-button>
           </div>
         </el-card>
 
@@ -139,7 +145,12 @@
       width="40%"
       @close="btnCancel"
     >
-      <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="80px">
+      <el-form
+        ref="ruleFormRef"
+        :model="ruleForm"
+        :rules="rules"
+        label-width="80px"
+      >
         <el-form-item label="离职时间" prop="exceptTime">
           <el-date-picker
             v-model="ruleForm.exceptTime"
@@ -152,7 +163,7 @@
           <el-input
             v-model="ruleForm.reason"
             type="textarea"
-            :autosize="{ minRows: 3, maxRows: 8}"
+            :autosize="{ minRows: 3, maxRows: 8 }"
             style="width: 70%;"
             placeholder="请输入内容"
           />
@@ -162,10 +173,7 @@
         <el-row type="flex" justify="center">
           <el-col :span="6">
             <el-button @click="btnCancel">取 消</el-button>
-            <el-button
-              type="primary"
-              @click="btnOK"
-            >确 定</el-button>
+            <el-button type="primary" @click="btnOK">确 定</el-button>
           </el-col>
         </el-row>
       </span>
@@ -196,8 +204,12 @@ export default {
         processName: '离职'
       },
       rules: {
-        exceptTime: [{ trigger: 'blur', required: true, message: '离职时间不能为空' }],
-        reason: [{ trigger: 'blur', required: true, message: '离职原因不能为空' }]
+        exceptTime: [
+          { trigger: 'blur', required: true, message: '离职时间不能为空' }
+        ],
+        reason: [
+          { trigger: 'blur', required: true, message: '离职原因不能为空' }
+        ]
       }
     }
   },
