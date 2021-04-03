@@ -12,6 +12,8 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <!-- 放置切换多语言 -->
+      <lang class="right-menu-item" />
       <screen-full class="right-menu-item" />
       <theme-picker class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
