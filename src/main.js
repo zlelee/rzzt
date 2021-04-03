@@ -12,7 +12,6 @@ import App from './App'
 import store from './store'
 import router from './router'
 import checkPermission from '@/mixin/checkPermission'
-
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
@@ -46,7 +45,6 @@ Vue.use(Component) // 注册自己的插件
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
-
 Vue.config.productionTip = false
 
 new Vue({
