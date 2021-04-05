@@ -35,9 +35,10 @@ if (isProd) {
     ]
   }
   externals = {
-    'vue': 'Vue',
-    'element-ui': 'ELEMENT',
-    'xlsx': 'XLSX'
+    // key(包名) / value(这个值 是 需要在CDN中获取js, 相当于 获取的js中 的该包的全局的对象的名字)
+    'vue': 'Vue', // 后面的名字不能随便起 应该是 js中的全局对象名
+    'element-ui': 'ELEMENT', // 都是js中全局定义的
+    'xlsx': 'XLSX' // 都是js中全局定义的
   }
 }
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
@@ -92,7 +93,10 @@ module.exports = {
         include: 'initial'
       }
     ])
-
+    config.plugin('html').tap(args => {
+      args[0].cdn = cdn
+      return args
+    })
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 
